@@ -1,0 +1,13 @@
+database_name           = "wordpress_db"          // database name
+database_user           = "wordpress_user"        // database username
+database_password       = "PassWord4-user"        // password for user database
+shared_credentials_file = "~/.aws"                // Access key and Secret key file location
+region                  = "us-east-1"
+ami                     = "ami-0a8b4cd432b1c3063" // linux 2 ami
+AZ1                     = "us-east-1a"            // avaibility zones
+AZ2                     = "us-east-1b"
+AZ3                     = "us-east-1c"
+PUBLIC_KEY_PATH         = "~/.ssh/id_rsa.pub"
+PRIV_KEY_PATH           = "~/.ssh/id_rsa"
+instance_type           = "t2.micro"
+instance_class          = "db.t2.micro"
