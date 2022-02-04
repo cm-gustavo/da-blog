@@ -18,7 +18,6 @@
  * @package WordPress
  */
 
-// ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
 define( 'DB_NAME', '{{ mysql_db }}' );
 
@@ -41,8 +40,7 @@ define( 'DB_COLLATE', '' );
 define('FS_METHOD', 'direct');
 define('WP_MEMORY_LIMIT', '128M');
 
-/**#@+
- * Authentication Unique Keys and Salts.
+/** Authentication Unique Keys and Salts.
  *
  * Change these to different unique phrases!
  * You can generate these using the {@link https://api.wordpress.org/secret-key/1.1/salt/ WordPress.org secret-key service}
@@ -58,8 +56,6 @@ define( 'AUTH_SALT',        '' );
 define( 'SECURE_AUTH_SALT', '' );
 define( 'LOGGED_IN_SALT',   '' );
 define( 'NONCE_SALT',       '' );
-
-/**#@-*/
 
 /**
  * WordPress Database Table prefix.
@@ -82,8 +78,6 @@ $table_prefix = 'wp_';
  * @link https://codex.wordpress.org/Debugging_in_WordPress
  */
 define( 'WP_DEBUG', false );
-
-/* That's all, stop editing! Happy publishing. */
 
 /** Absolute path to the WordPress directory. */
 if ( ! defined( 'ABSPATH' ) ) {

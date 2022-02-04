@@ -8,8 +8,8 @@ terraform apply
 terraform destroy
 
 ### To-dos:
-* Database configs
-* Figure out IPs configuration and access
-* Github Actions
-* Keyvault integration?
-* Improve documentation
+* DNS configuration
+* Proper database credentials and configuration
+* Limit access to control panel to VPN
+* Create Github Actions to automate deploy
+* Improve [documentation](https://coin-metro.atlassian.net/wiki/spaces/SOFT/pages/217481237/New+Blog+Infrastructure)
