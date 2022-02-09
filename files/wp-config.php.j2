@@ -48,14 +48,14 @@ define('WP_MEMORY_LIMIT', '128M');
  *
  * @since 2.6.0
  */
-define( 'AUTH_KEY',         '' );
-define( 'SECURE_AUTH_KEY',  '' );
-define( 'LOGGED_IN_KEY',    '' );
-define( 'NONCE_KEY',        '' );
-define( 'AUTH_SALT',        '' );
-define( 'SECURE_AUTH_SALT', '' );
-define( 'LOGGED_IN_SALT',   '' );
-define( 'NONCE_SALT',       '' );
+define('AUTH_KEY',         'jB7vu1q3$i08|f?0y5bqVl=p`&VgB<-T:Usy|:)RuplCtTUQK}q-2:1i U;*-zs%');
+define('SECURE_AUTH_KEY',  ';kyvyf{WM&{w eOuG<u):[3Jr72(1jDd-bc)CurGsyaI>JlD(l> jTx}hXgw#50+');
+define('LOGGED_IN_KEY',    '5&DY~-l~i@rwfR:~pPU Ch|xfqe6af)Heu)HT|Z.<MU{8x%/Wv_#UUun6DFM`K*;');
+define('NONCE_KEY',        '!KG`xzrh;<}KOPs*^ykt0i&CRc47t<--pgbmMNIl%6q9|bLNq9XFiZ2h/#0p>ZW/');
+define('AUTH_SALT',        'g~Vi`N|:oKNG(^f:b$At3<wu(NI4xeX9d2=0)7wZ-5~3K;ip6M_hQiX+$+N,-W=;');
+define('SECURE_AUTH_SALT', 'i~.Q82+8cH2f(e4<Z(K3q-H~fAe;jLy^C#Aua+SCR+Ymg)?/^6}&72Ky|T4bCze]');
+define('LOGGED_IN_SALT',   'kNW@r/e{t_|+sOaFLVOd%/3kWN?)f(U=;K4!jthg?UEyZ06r1Q54cxb[*cQlHH$M');
+define('NONCE_SALT',       '%Rl-~*{J%3!S*-:%R$>^`Ah{p3bG[{9a@#^Ve}ti[/U=x+.HETRqjCaTB<zIe-6o');
 
 /**
  * WordPress Database Table prefix.
@@ -86,3 +86,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /** Sets up WordPress vars and included files. */
 require_once( ABSPATH . 'wp-settings.php' );
+
+/**
+ * Disable pingback.ping xmlrpc method to prevent WordPress from participating in DDoS attacks
+ * More info at: https://docs.bitnami.com/general/apps/wordpress/troubleshooting/xmlrpc-and-pingback/
+ */
+if ( !defined( 'WP_CLI' ) ) {
+    // remove x-pingback HTTP header
+    add_filter("wp_headers", function($headers) {
+        unset($headers["X-Pingback"]);
+        return $headers;
+    });
+    // disable pingbacks
+    add_filter( "xmlrpc_methods", function( $methods ) {
+        unset( $methods["pingback.ping"] );
+        return $methods;
+    });
+}

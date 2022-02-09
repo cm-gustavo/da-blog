@@ -1,6 +1,6 @@
 database_name           = "wordpress_db"          // database name
 database_user           = "wordpress_user"        // database username
-database_password       = "PassWord4-user"        // password for user database
+database_password       = "339ad8905d6be13cad4cfcc97660ff06c5ac380ce1b9d4da9fd1109425d52aed"
 shared_credentials_file = "~/.aws"                // Access key and Secret key file location
 region                  = "us-east-1"
 ami                     = "ami-0a8b4cd432b1c3063" // linux 2 ami
