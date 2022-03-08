@@ -54,15 +54,49 @@
   - name: Set up wp-config
     template:
       src: "files/wp-config.php.j2"
-      dest: "/var/www/html/wp-config.php"
+      dest: "/var/www/html/wp-config.php"    
+      
+  - name: Set ownership
+    file:
+      path: "/var/www/html"
+      state: directory
+      recurse: yes
+      owner: apache
+      group: apache
 
-  - name: set permissions (changing ownership)
-    shell: chown -R ec2-user:apache /var/www/html
+  - name: Set permissions for directories
+    shell: "chmod -R 775 /var/www/html/"
 
-  - name: set permission (chmod 774)  
-    shell: chown -R ec2-user:apache /var/www/html
-
-   # apache  server started
-  - name: services started   
+  - name: Start Apache Server  
     service: name={{ item }} state=restarted enabled=True
     loop: [ 'httpd' ]
+
+  # - name: Set permissions for directories
+  #   shell: "/usr/bin/find /var/www/html/ -type d -exec chmod 750 {} \\;"
+
+  # - name: Set permissions for files
+  #   shell: "/usr/bin/find /var/www/html/ -type f -exec chmod 640 {} \\;"
+
+  # handlers:
+  #   - name: Reload Apache
+  #     service:
+  #       name: apache2
+  #       state: reloaded
+
+  #   - name: Restart Apache
+  #     service:
+  #       name: apache2
+  #       state: restarted
+
+  # - name: Start Apache Service 
+  #   service: 
+  #     name: apache2
+  #     state: restarted 
+  #     enabled: True
+  #   loop: [ 'httpd' ]
+
+  # - name: set permissions (changing ownership)
+  #   shell: chown -R ec2-user:apache /var/www/html
+
+  # - name: set permission (chmod 774)  
+  #   shell: chown -R ec2-user:apache /var/www/html
