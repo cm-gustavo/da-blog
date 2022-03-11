@@ -164,6 +164,18 @@ resource "aws_instance" "wordpress-ec2" {
   depends_on = [aws_db_instance.wordpress-db]
 }
 
+resource "aws_route53_zone" "main" {
+  name = "coinmetro-dev.com"
+}
+
+resource "aws_route53_record" "dev-ns" {
+  zone_id = aws_route53_zone.main.zone_id
+  name    = "blog-test.coinmetro-dev.com"
+  type    = "A"
+  ttl     = "300"
+  records = [aws_eip.eip.public_ip]
+}
+
 resource "aws_key_pair" "key-pair" {
   key_name   = "key-pair"
   public_key = file(var.PUBLIC_KEY_PATH)
@@ -201,11 +213,16 @@ resource "null_resource" "wordpress-install" {
 
   # Run script to update python on remote client
   provisioner "remote-exec" {
-    inline = ["sudo yum update -y", "sudo yum install python3 -y", "echo Done!"]
+    inline = [
+      "sudo yum update -y", 
+      "sudo yum install python3 -y", 
+      "echo Done!"
+    ]
   }
 
   # Play ansible playbook
   provisioner "local-exec" {
-    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ec2-user -i '${aws_eip.eip.public_ip},' --private-key ${var.PRIV_KEY_PATH}  playbook-rendered.yml"
+    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ec2-user -i '${aws_eip.eip.public_ip},' playbook-rendered.yml"
+    # command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ec2-user -i '${aws_eip.eip.public_ip},' --private-key ${var.PRIV_KEY_PATH}  playbook-rendered.yml"
   }
 }
