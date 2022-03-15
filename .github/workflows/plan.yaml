@@ -36,7 +36,4 @@ jobs:
         
       - name: Terraform Plan
         id: plan
-        run: terraform plan -no-color
-        
-      - name: Terraform Plan Output
-        run: echo ${{ steps.plan.outputs.stdout }}
+        run: terraform plan
