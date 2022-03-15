@@ -9,7 +9,7 @@ resource "aws_vpc" "blog-vpc" {
 resource "aws_subnet" "public-subnet" {
   vpc_id                  = aws_vpc.blog-vpc.id
   cidr_block              = "10.0.1.0/24"
-  map_public_ip_on_launch = "true" //it makes this a public subnet
+  map_public_ip_on_launch = "true"
   availability_zone       = var.AZ1
 }
 
@@ -17,7 +17,7 @@ resource "aws_subnet" "public-subnet" {
 resource "aws_subnet" "private-subnet-1" {
   vpc_id                  = aws_vpc.blog-vpc.id
   cidr_block              = "10.0.2.0/24"
-  map_public_ip_on_launch = "false" //it makes private subnet
+  map_public_ip_on_launch = "false"
   availability_zone       = var.AZ2
 }
 
@@ -25,7 +25,7 @@ resource "aws_subnet" "private-subnet-1" {
 resource "aws_subnet" "private-subnet-2" {
   vpc_id                  = aws_vpc.blog-vpc.id
   cidr_block              = "10.0.3.0/24"
-  map_public_ip_on_launch = "false" //it makes private subnet
+  map_public_ip_on_launch = "false"
   availability_zone       = var.AZ3
 }
 
@@ -93,7 +93,7 @@ resource "aws_security_group" "ec2-sg" {
 
   vpc_id = aws_vpc.blog-vpc.id
   tags = {
-    Name = "allow ssh,http,https"
+    Name = "EC2 Security Group"
   }
 }
 
@@ -116,7 +116,7 @@ resource "aws_security_group" "rds-sg" {
   }
 
   tags = {
-    Name = "allow ec2"
+    Name = "RDS Security Group"
   }
 }
 
@@ -154,11 +154,12 @@ resource "aws_instance" "wordpress-ec2" {
   ami             = var.ami
   instance_type   = var.instance_type
   subnet_id       = aws_subnet.public-subnet.id
+  # private_ip      = "10.0.0.12"
   security_groups = ["${aws_security_group.ec2-sg.id}"]
 
   key_name = aws_key_pair.key-pair.id
   tags = {
-    Name = "Wordpress.web"
+    Name = "Wordpress Instance"
   }
 
   depends_on = [aws_db_instance.wordpress-db]
