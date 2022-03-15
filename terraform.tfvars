@@ -2,8 +2,7 @@ database_name           = "wordpress_db"          // database name
 database_user           = "wordpress_user"        // database username
 database_password       = "wordpress_password"    // database password
 shared_credentials_file = "~/.aws"                // Access key and Secret key file location
-PUBLIC_KEY_PATH         = "~/.ssh/id_rsa.pub"
-PRIV_KEY_PATH           = "~/.ssh/id_rsa"
+PUBLIC_KEY_PATH         = "./files/id_rsa.pub"
 instance_type           = "t2.micro"
 instance_class          = "db.t2.micro"
 
