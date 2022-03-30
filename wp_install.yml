@@ -38,6 +38,12 @@
   - name: Set permissions for files
     shell: "/usr/bin/find /var/www/html/ -type f -exec chmod 0664 {} \\;"   
 
+  - name: Set permissions for server directories
+    shell: "/usr/bin/find /etc/httpd/ -type d -exec chmod 2775 {} \\;"
+
+  - name: Set permissions for server files
+    shell: "/usr/bin/find /etc/httpd/ -type f -exec chmod 0664 {} \\;" 
+
   # wordpress download and install
   - name: Wordpress download and unpacking
     unarchive:
@@ -45,8 +51,13 @@
       dest: "/var/www"
       remote_src: yes
 
+  - name: Create blog folder
+    file:
+      path: "/var/www/html/blog"
+      state: directory
+
   - name: Copy wordpress files to /html folder
-    shell: cp /var/www/wordpress/. /var/www/html -r
+    shell: cp /var/www/wordpress/. /var/www/html/blog -r
 
   - name: Delete old wordpress files
     shell: rm /var/www/wordpress -r 
@@ -54,18 +65,46 @@
   - name: Set up wp-config
     template:
       src: "files/wp-config.php.j2"
-      dest: "/var/www/html/wp-config.php"    
-      
-  - name: Set ownership
+      dest: "/var/www/html/blog/wp-config.php"
+
+  - name: Create vhosts folder
     file:
-      path: "/var/www/html"
+      path: "/etc/httpd/conf/vhosts"
+      state: directory
+  
+  - name: Upload vhost config
+    copy:
+      src: "files/vhosts/wordpress-https-vhost.conf"
+      dest: "/etc/httpd/conf/vhosts/wordpress-https-vhost.conf"
+  
+  - name: Upload vhost status config
+    copy:
+      src: "files/vhosts/00_status-vhost.conf"
+      dest: "/etc/httpd/conf/vhosts/00_status-vhost.conf"
+
+  - name: Change Apache server root folder
+    replace:
+      path: "/etc/httpd/conf/httpd.conf"
+      regexp: "/var/www/html"
+      replace: "/var/www/html/blog"
+
+  - name: Include vhost config files to httpd.config
+    lineinfile:
+      path: "/etc/httpd/conf/httpd.conf"
+      line: 'IncludeOptional "/etc/httpd/conf/vhosts/*.conf"'
+      state: present
+      create: yes
+      
+  - name: Set ownership to Apache
+    file:
+      path: "/var/www/html/blog"
       state: directory
       recurse: yes
       owner: apache
       group: apache
 
   - name: Set permissions for directories
-    shell: "chmod -R 775 /var/www/html/"
+    shell: "chmod -R 775 /var/www/html/blog"
 
   - name: Start Apache Server  
     service: name={{ item }} state=restarted enabled=True
