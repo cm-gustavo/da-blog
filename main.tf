@@ -159,7 +159,7 @@ resource "aws_instance" "wordpress-ec2" {
 
   key_name = aws_key_pair.key-pair.id
   tags = {
-    Name = "Wordpress Instance"
+    Name = "CM Blog Instance"
   }
 
   depends_on = [aws_db_instance.wordpress-db]
