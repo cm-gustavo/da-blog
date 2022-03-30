@@ -3,8 +3,8 @@ database_user           = "wordpress_user"        // database username
 database_password       = "wordpress_password"    // database password
 shared_credentials_file = "~/.aws"                // Access key and Secret key file location
 PUBLIC_KEY_PATH         = "./files/id_rsa.pub"
-instance_type           = "t2.micro"
-instance_class          = "db.t2.micro"
+instance_type           = "t2.medium"
+instance_class          = "db.t2.medium"
 
 region                  = "eu-west-2"
 ami                     = "ami-0dd555eb7eb3b7c82" // linux 2 ami
